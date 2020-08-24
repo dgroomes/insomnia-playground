@@ -4,6 +4,12 @@ NOT YET IMPLEMENTED
 
 Learning and exploring the lightweight (kind of like SQLite) JavaScript database *NeDB* (<https://github.com/louischatriot/nedb>).
 
+### Instructions
+
+WORK IN PROGRESS
+
+To use this script, install the dependencies with `npm install`. Then execute the script with `node insomnia.js`.
+
 ### Background
 
 I want to use NeDB to extract [Insomnia REST Client](https://github.com/Kong/insomnia) request data. In other words, I 
@@ -25,4 +31,3 @@ Explore the functions of an NeDB database by typing `db.` and then pressing `Tab
 autocompletion! Putting it all together, you should something like this:
 
 ![NeDB getting started in the Node.js REPL screenshot](nedb-getting-started.png)
-
