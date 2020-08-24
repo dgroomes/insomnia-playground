@@ -21,7 +21,29 @@ let data = {
     resources: [],
 };
 
-console.log("Registering the 'find' request")
-requestsDb.find({}, (err, found) => {
-    console.log(JSON.stringify(found, null, 2));
-});
+/**
+ * the NeDB 'find' function but in a Promise
+ * @param db
+ * @param query
+ * @return {Promise<Array<String>>}
+ */
+function findAsync(db, query = {}) {
+    return new Promise(resolve => {
+        db.find(query, (err, found) => {
+            if (err) {
+                console.warn(`"find" query failed on the ${db.filename} database`, err);
+                resolve([]);
+                return;
+            }
+            resolve(found);
+        });
+    });
+}
+
+
+async function findRequests() {
+    let found = (await findAsync(requestsDb, {}));
+    console.log(`Found ${found.length} Request elements`);
+}
+
+findRequests();
