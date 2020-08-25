@@ -1,5 +1,10 @@
+#!/usr/bin/env node
+//
 // Interact with the Insomnia NeDB databases (there is a database for each of the types: Workspaces, Requests, Environments,
 // etc.)
+//
+// Specifically, this script exports an Insomnia Workspace into a JSON file. It emulates the export functionality
+// available in the Insomnia UI.
 
 const INSOMNIA_APP_SUPPORT_FILEPATH = '/Users/davidgroomes/Library/Application Support/Insomnia';
 const EXPORT_FORMAT = 4; // https://github.com/Kong/insomnia/blob/c3678d6e37a370a6632257e663ac3ec04f9eb04b/packages/insomnia-app/app/common/import.js#L19
@@ -127,8 +132,6 @@ async function findWorkspaceItems(workspaceName) {
 /**
  * Export an Insomnia Workspace to an array of JSON data (e.g. elements of type Workspace, RequestGroup (folders), and
  * Request).
- *
- * TODO. Save the extracted data to a file instead of just logging it to the console.
  */
 async function exportWorkSpace(workspaceName) {
     let items = await findWorkspaceItems(workspaceName);

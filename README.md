@@ -30,20 +30,14 @@ autocompletion! Putting it all together, you should something like this:
 
 ### `example-export-files/`
 
-Do you want an example? There are example data files exported from my own Insomnia workspaces. There is both:
+Do you want an example? There are example data files exported from my own Insomnia workspaces. The have been doctored
+though! I formatted with the `jq` commands later detailed in this doc. The example files are:
 
-* A file exported using the Insomnia application: `Insomnia_2020-08-24.json`
-* A file exported using this project: `Insomnia-Insomnia_2020-08-24.json`
+* A file exported using the Insomnia application: `example-export-files/InsomniaAppExport.formatted.json`
+* A file exported using this project: `example-export-files/NedbPlaygroundExport.formatted.json`
 
-You can compare these two files to see that this project exports similar data as the Insomnia app. In theory you could 
-use a diffing tool to easily compare and contrast the differences but there are too many noisy differences that make the
-diff hard to read:
-* The order of the elements in the `resources` JSON array is different between the two files
-* The order of the JSON fields is differnet between the two files
-* The file exported by this project supports only 'workspace', 'requests', and 'request groups' but not 'environment' or 'cook jar'.  
- 
-To clean up the differences so that you can effectively use a diffing tool you can pass the files through a `jq` filter
-like this:
+These files were cleaned up to make the diff cleaner (and thus illustrate how similar the contents of the file really
+is!). The original export files were passed through a `jq` filter like this:
 
 ```
 cat example-export-files/InsomniaAppExport.json |\
