@@ -5,7 +5,18 @@ const INSOMNIA_APP_SUPPORT_FILEPATH = '/Users/davidgroomes/Library/Application S
 const EXPORT_FORMAT = 4; // https://github.com/Kong/insomnia/blob/c3678d6e37a370a6632257e663ac3ec04f9eb04b/packages/insomnia-app/app/common/import.js#L19
 const EXPORTER_VERSION = 1;
 
+/**
+ * Mapping Insomnia 'type' and '_type'. Insomnia uses an UpperCamelcase name in some contexts and a snake_case name in
+ * other contexts.
+ */
+const typeNameMapping = {
+    "Workspace": "workspace",
+    "RequestGroup": "request_group",
+    "Request": "request"
+}
+
 let NeDB = require('nedb');
+let fs = require('fs');
 
 /**
  * Load an Insomnia NeDB database
@@ -44,9 +55,8 @@ function findAsync(db, query = {}) {
     });
 }
 
-function prettyPrint(string) {
-    let prettyJson = JSON.stringify(string, null, 2);
-    console.log(prettyJson);
+function prettyJson(obj) {
+    return JSON.stringify(obj, null, 2);
 }
 
 /**
@@ -55,7 +65,7 @@ function prettyPrint(string) {
  * @param query
  */
 function findAndLog(db, query) {
-    findAsync(db, query).then(found => console.log(prettyPrint(found)));
+    findAsync(db, query).then(found => console.log(prettyJson()));
 }
 
 
@@ -66,7 +76,8 @@ function findAndLog(db, query) {
  * @param workspaceName
  * @return {Promise<void>}
  */
-async function findWorkspaceItems(workspaceName = "Insomnia") {
+async function findWorkspaceItems(workspaceName) {
+    console.log(`Finding items in the Workspace '${workspaceName}'`);
     let foundWorkspaces = (await findAsync(dbs.workspaces, {name: workspaceName}));
     console.log(`Found ${foundWorkspaces.length} workspaces`)
     if (foundWorkspaces.length !== 1) {
@@ -102,26 +113,54 @@ async function findWorkspaceItems(workspaceName = "Insomnia") {
     }
 
     console.log(`Overall, found ${exportItems.length} items`);
+
+    // Format the export items
+    for (let i = 0; i < exportItems.length; i++) {
+        let item = exportItems[i];
+        item._type = typeNameMapping[item.type]
+        delete item.type;
+    }
+
     return exportItems;
 }
 
 /**
- * NOT YET FULLY IMPLEMENTED
  * Export an Insomnia Workspace to an array of JSON data (e.g. elements of type Workspace, RequestGroup (folders), and
  * Request).
  *
  * TODO. Save the extracted data to a file instead of just logging it to the console.
  */
-async function exportWorkSpace() {
-    let items = await findWorkspaceItems("Insomnia");
-    return {
+async function exportWorkSpace(workspaceName) {
+    let items = await findWorkspaceItems(workspaceName);
+    let nowDate = (
+        // See the extensive note at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
+        function standardizedIso8601FormatterPolyfill() {
+            function pad(number) {
+                if (number < 10) {
+                    return '0' + number;
+                }
+                return number;
+            }
+
+            return this.getUTCFullYear() +
+                '-' + pad(this.getUTCMonth() + 1) +
+                '-' + pad(this.getUTCDate())
+        }).apply(new Date());
+
+    let exportData = {
         _type: 'export',
         __export_format: EXPORT_FORMAT,
-        __export_date: new Date(),
+        __export_date: nowDate,
         __export_source: `dgroomes.insomnia.exporter:v${EXPORTER_VERSION}`,
         __notes: "This data was exported using https://github.com/dgroomes/nedb-playground",
         resources: items,
-    };
+    }
+    let exportJson = prettyJson(exportData);
+    let exportFilePath = `Insomnia-${workspaceName}_${nowDate}.json`;
+    fs.writeFile(exportFilePath, exportJson, err => {
+        if (err) return console.warn(`Failed to write export file. ${err}`);
+        console.log(`Items for Insomnia Workspace '${workspaceName}' successfully written to ${exportFilePath}`)
+    });
 }
 
-exportWorkSpace().then(exportData => prettyPrint(exportData));
+exportWorkSpace("Insomnia");
