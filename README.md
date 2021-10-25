@@ -1,15 +1,21 @@
-# nedb-playground
+# insomnia-playground
 
-Learning and exploring the lightweight (kind of like SQLite) JavaScript database *NeDB* (<https://github.com/louischatriot/nedb>).
+Learning and exploring the Insomnia REST Client <https://github.com/Kong/insomnia>.
 
-### Instructions
+## Description
+
+The [Insomnia REST Client](https://github.com/Kong/insomnia), usually referred to as just *Insomnia*, is an
+overwhelmingly popular developer tool. And rightly so, because it's feature-ful, fluid, and Open Source. This project is
+my way of exploring some of the features of Insomnia, like exporting collections and making a plugin.
+
+## Instructions
 
 To use this script, install the dependencies with `npm install`. Then execute the script with `node insomnia.js`.
 
 ### Background
 
-I want to use NeDB to extract [Insomnia REST Client](https://github.com/Kong/insomnia) request data. In other words, I 
-want to implement a *Commandline export* feature similar to what is requested in the GitHub issue 
+I want to use NeDB to extract [Insomnia REST Client](https://github.com/Kong/insomnia) request data. In other words, I
+want to implement a *Commandline export* feature similar to what is requested in the GitHub issue
 [[Feature Request] Command line API (import/export, send request) #479](https://github.com/Kong/insomnia/issues/479) in
 the Insomnia GitHub project.
 
