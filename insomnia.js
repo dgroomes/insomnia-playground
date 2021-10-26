@@ -155,7 +155,7 @@ async function exportWorkSpace(workspaceName) {
         __export_format: EXPORT_FORMAT,
         __export_date: nowDate,
         __export_source: `dgroomes.insomnia.exporter:v${EXPORTER_VERSION}`,
-        __notes: "This data was exported using https://github.com/dgroomes/nedb-playground",
+        __notes: "This data was exported using https://github.com/dgroomes/insomnia-playground",
         resources: items,
     }
     let exportJson = prettyJson(exportData);
