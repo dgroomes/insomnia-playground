@@ -1,0 +1,10 @@
+{
+  "name": "insomnia-plugin-helloworld",
+  "version": "1.0.0",
+  "main": "helloworld.js",
+  "insomnia": {
+    "name": "helloworld",
+    "displayName": "hello world plugin",
+    "description": "The hello world plugin is for educational purposes."
+  }
+}
