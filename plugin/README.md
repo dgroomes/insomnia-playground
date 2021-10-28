@@ -10,16 +10,16 @@ Follow these instructions to install the plugin.
     * `./install.sh`
 2. View the plugin in Insomnia:
     * Open Insomnia
-    * Open Chrome Dev Tools (`Cmd + Shift + I`)
-    * Open Preferences
-    * Go to the "Plugins" tab
-    * Look at the message in the Dev Tools console!
+    * Open a workspace
+    * Click the dropdown menu on the current workspace
+    * Click the "⭐️ Hello World" button
+    * A message will appear!
 
 ## Wish List
 
 General clean-ups, changes and things I wish to implement for this project:
 
-* Do UI stuff in the plugin
+* DONE Do UI stuff in the plugin
 
 ## Reference
 
